@@ -12,8 +12,14 @@ const (
 )
 
 func main() {
-	var adultCount int = 2
-	var childCount int = 1
+	var adultCount int
+	var childCount int
+
+	fmt.Print("Enter number of adults: ")
+	fmt.Scanln(&adultCount)
+
+	fmt.Print("Enter number of children: ")
+	fmt.Scanln(&childCount)
 
 	isEveningShow := true
 	isGroup := (adultCount + childCount) >= 3
@@ -24,10 +30,11 @@ func main() {
 	total := subtotal + bookingFee
 
 	fmt.Println("===" + appName + "===")
-	fmt.Printf("Show: %s\n", showName)
-	fmt.Printf("Evening Show: %t  |  Group(>=3): %t  |  VIP: %t\n\n", isEveningShow, isGroup)
+	fmt.Println("\n*** Show Information ***")
+	fmt.Printf("Show Name: %s | Evening Show: %t  |  Group(>=3): %t\n", showName, isEveningShow, isGroup)
 
+	fmt.Println("\n*** Ticket Information ***")
 	summary := fmt.Sprintf("%s — tickets %d (adults %d, children %d) → Total %s%d",
 		showName, adultCount+childCount, adultCount, childCount, currency, total)
-	fmt.Println("\n" + summary)
+	fmt.Println(summary)
 }
