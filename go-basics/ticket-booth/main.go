@@ -2,39 +2,46 @@ package main
 
 import "fmt"
 
-const (
-	currency   = "£"
-	adultPrice = 12
-	childPrice = 8
-	bookingFee = 1
-	showName   = "Funny Show"
-	appName    = "Ticket Booth"
-)
+const appName string = "Ticket Booth"
+
+// Function definition
+func multiply(a int, b int) int {
+	return a * b
+}
+
+/*
+This function displays the app name
+The appName constant contains the application name
+*/
+func displayAppName() {
+	fmt.Println("===" + appName + "===")
+}
 
 func main() {
-	var adultCount int
-	var childCount int
+	const (
+		showName   string = "Funny Show"
+		adultPrice int    = 12
+		childPrice int    = 8
+		bookingFee int    = 2
+	)
 
-	fmt.Print("Enter number of adults: ")
-	fmt.Scanln(&adultCount)
-
-	fmt.Print("Enter number of children: ")
-	fmt.Scanln(&childCount)
-
-	isEveningShow := true
-	isGroup := (adultCount + childCount) >= 3
-
-	totalAdults := adultCount * adultPrice
-	totalChildren := childCount * childPrice
-	subtotal := totalAdults + totalChildren
-	total := subtotal + bookingFee
+	var (
+		adultCount int
+		childCount int
+	)
 
 	fmt.Println("===" + appName + "===")
-	fmt.Println("\n*** Show Information ***")
-	fmt.Printf("Show Name: %s | Evening Show: %t  |  Group(>=3): %t\n", showName, isEveningShow, isGroup)
+	displayAppName()
 
-	fmt.Println("\n*** Ticket Information ***")
-	summary := fmt.Sprintf("%s — tickets %d (adults %d, children %d) → Total %s%d",
-		showName, adultCount+childCount, adultCount, childCount, currency, total)
-	fmt.Println(summary)
+	fmt.Println("Enter the number of adults:")
+	fmt.Scanln(&adultCount)
+
+	fmt.Println("Enter the number of children:")
+	fmt.Scanln(&childCount)
+
+	totalAdultPrice := multiply(adultCount, adultPrice)
+	totalChildrenPrice := multiply(childCount, childPrice)
+	totalPrice := totalAdultPrice + totalChildrenPrice + bookingFee
+
+	fmt.Printf("Total price is: %d", totalPrice)
 }

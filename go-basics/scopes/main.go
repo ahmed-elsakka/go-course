@@ -2,18 +2,23 @@ package main
 
 import "fmt"
 
+const appName string = "Ticket Booth"
+
 // Function definition
 func multiply(a int, b int) int {
 	return a * b
 }
 
+/*
+This function displays the app name
+The appName constant contains the application name
+*/
 func displayAppName() {
-	fmt.Println("=== Ticket Booth ===")
+	fmt.Println("===" + appName + "===")
 }
 
 func main() {
 	const (
-		appName    string = "Ticket Booth"
 		showName   string = "Funny Show"
 		adultPrice int    = 12
 		childPrice int    = 8
@@ -25,6 +30,7 @@ func main() {
 		childCount int
 	)
 
+	fmt.Println("===" + appName + "===")
 	displayAppName()
 
 	fmt.Println("Enter the number of adults:")
