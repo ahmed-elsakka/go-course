@@ -30,7 +30,6 @@ func main() {
 		childCount int
 	)
 
-	fmt.Println("===" + appName + "===")
 	displayAppName()
 
 	fmt.Println("Enter the number of adults:")
