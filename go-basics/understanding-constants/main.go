@@ -3,7 +3,6 @@ package main
 import "fmt"
 
 func main() {
-	var appName string = "Ticket Booth"
-	appName = "Ticket App"
+	const appName string = "Ticket Booth"
 	fmt.Print("=== " + appName + " ===")
 }
