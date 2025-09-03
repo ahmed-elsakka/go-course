@@ -15,5 +15,5 @@ func main() {
 	fmt.Scanln(&b)
 
 	fmt.Printf("The sum of the two numbers is: %.2f\n", a+b)
-	fmt.Printf("First number larger than second number: %t", a > b)
+	fmt.Printf("The first number is larger than the second: %t", a > b)
 }
