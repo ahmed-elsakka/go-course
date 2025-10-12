@@ -26,7 +26,6 @@ func main() {
 
 	var student Student
 	db.Where("name = ?", "Bob").First(&student)
-
 	fmt.Println(student)
 
 	db.Model(&student).Update("Email", "bob@newdomain.com")
