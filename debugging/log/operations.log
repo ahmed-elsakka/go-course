@@ -1,0 +1,13 @@
+2025/10/12 15:13:56 main.go:32: Program started
+2025/10/12 15:13:56 main.go:10: Fast operation 5 started
+2025/10/12 15:13:56 main.go:15: Slow operation 1 started
+2025/10/12 15:13:56 main.go:49: Fast operation ended
+2025/10/12 15:13:56 main.go:10: Fast operation 4 started
+2025/10/12 15:13:56 main.go:15: Slow operation 2 started
+2025/10/12 15:13:56 main.go:15: Slow operation 3 started
+2025/10/12 15:13:56 main.go:49: Fast operation ended
+2025/10/12 15:13:57 main.go:47: Slow operation ended
+2025/10/12 15:13:57 main.go:47: Slow operation ended
+2025/10/12 15:13:57 main.go:47: Slow operation ended
+2025/10/12 15:13:57 main.go:53: Total run time: 1.0017828s
+2025/10/12 15:13:57 main.go:54: Program finished successfully
