@@ -2,24 +2,18 @@ package main
 
 import "fmt"
 
-type Student struct {
+type User struct {
 	name string
 	age  int
 }
 
 func main() {
+	user := User{}
+	user.age = 21
+	user.name = "Sara"
 
-	s1 := Student{"Sara", 21} // positional
-	s2 := Student{name: "Alice", age: 23}
-	var s3 Student
-	s3.name = "Bob"
-	s3.age = 30
-
-	printStudentDetails(s1)
-	printStudentDetails(s2)
-	printStudentDetails(s3)
-}
-
-func printStudentDetails(student Student) {
-	fmt.Printf("Name: %s , age: %d", student.name, student.age)
+	user2 := new(User)
+	user2.age = 21
+	user2.name = "Bob"
+	fmt.Printf("Name: %s, age: %d", user2.name, user2.age)
 }
