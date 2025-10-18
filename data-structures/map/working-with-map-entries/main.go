@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 func main() {
 	students := map[int]string{
 		1: "Sara",
@@ -7,9 +9,14 @@ func main() {
 		3: "Jessica",
 	}
 
-	students[4] = "Bob"
-	students[2] = "Alice"
-
+	// read entries
+	name := students[5]
+	fmt.Println(name)
+	// add/update entries
+	students[4] = "Alice"
+	students[2] = "Bob"
+	// delete entries
 	delete(students, 3)
-	name := students[1]
+
+	fmt.Println(students)
 }
