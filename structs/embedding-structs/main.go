@@ -2,29 +2,17 @@ package main
 
 import "fmt"
 
-type Address struct {
-	street  string
-	city    string
-	country string
-}
-
-type User struct {
-	name string
-	age  int
-	Address
-}
-
 func main() {
-	user := User{
-		name: "Sara",
-		age:  21,
-		Address: Address{
-			street:  "123 Main St",
-			city:    "London",
-			country: "UK",
-		},
+	address := Address{street: "123 main st.", city: "City", country: "Country"}
+	user, err := NewUser("Sara", 21, "sara@email.com", address)
+	if err != nil {
+		fmt.Println("Couldn't create user: ", err)
+		return
 	}
-	fmt.Println("User: ", user.name)
-	fmt.Println("Age: ", user.age)
-	fmt.Printf("Address: %s, %s, %s", user.street, user.city, user.country)
+
+	if err = user.updateEmail("example@email.com"); err != nil {
+		fmt.Println("Couldn't update the email: ", err)
+		return
+	}
+	user.process()
 }

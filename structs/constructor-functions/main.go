@@ -2,24 +2,17 @@ package main
 
 import "fmt"
 
-type Student struct {
-	name string
-	age  int
-}
-
 func main() {
-	s := newStudent("Sara", 21)
-	s.printStudentDetails()
-}
+	//user := User{name: "Sara", age: 21, email: "sara@email.com"}
+	user, err := NewUser("Sara", 21, "sara@email.com")
+	if err != nil {
+		fmt.Println("Couldn't create user: ", err)
+		return
+	}
 
-func newStudent(name string, age int) Student {
-	return Student{name: name, age: age}
-}
-
-func (student Student) printStudentDetails() {
-	fmt.Printf("Name: %s , age: %d\n", student.name, student.age)
-}
-
-func (student *Student) setAge(newAge int) {
-	student.age = newAge
+	if err = user.updateEmail("example@email.com"); err != nil {
+		fmt.Println("Couldn't update the email: ", err)
+		return
+	}
+	user.process()
 }
