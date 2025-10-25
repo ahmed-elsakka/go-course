@@ -23,9 +23,5 @@ func (w WAV) Play() {
 }
 
 func main() {
-	mp3 := MP3{Name: "mp3_song.mp3"}
-	wav := WAV{Name: "wav_song.wav"}
 
-	mp3.Play()
-	wav.Play()
 }

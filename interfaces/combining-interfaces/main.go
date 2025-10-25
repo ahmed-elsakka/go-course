@@ -8,8 +8,7 @@ type Playable interface {
 
 type AdvancedPlayable interface {
 	Playable
-	Pause()
-	Stop()
+	compress()
 }
 
 type MP3 struct {
@@ -24,12 +23,8 @@ func (m MP3) Play() {
 	fmt.Printf("Playing MP3 file: %s \n", m.Name)
 }
 
-func (m MP3) Stop() {
-	fmt.Printf("Stopped MP3 file: %s \n", m.Name)
-}
-
-func (m MP3) Pause() {
-	fmt.Printf("Paused MP3 file: %s \n", m.Name)
+func (m MP3) compress() {
+	fmt.Println("Compressing MP3 file: ", m.Name)
 }
 
 func (w WAV) Play() {
@@ -40,25 +35,18 @@ func main() {
 	mp3 := MP3{Name: "mp3_song.mp3"}
 	wav := WAV{Name: "wav_song.wav"}
 
-	PlayAudio(mp3)
-	PlayAudio(wav)
-
-	PauseAudio(mp3)
-	PlayAudio(mp3)
-	StopAudio(mp3)
-
+	compressAndPlayAdvancedPlayable(mp3)
+	prepareAndPlayPlayable(wav)
 }
 
-func PlayAudio(p Playable) {
+func prepareAndPlayPlayable(p Playable) {
+	fmt.Println("Configuring system audio...")
 	fmt.Println("Starting playback...")
 	p.Play()
 	fmt.Println("Playback finished")
 }
 
-func StopAudio(a AdvancedPlayable) {
-	a.Stop()
-}
-
-func PauseAudio(a AdvancedPlayable) {
-	a.Pause()
+func compressAndPlayAdvancedPlayable(advancedPlayable AdvancedPlayable) {
+	advancedPlayable.compress()
+	advancedPlayable.Play()
 }

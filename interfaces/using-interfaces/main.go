@@ -26,11 +26,12 @@ func main() {
 	mp3 := MP3{Name: "mp3_song.mp3"}
 	wav := WAV{Name: "wav_song.wav"}
 
-	PlayAudio(mp3)
-	PlayAudio(wav)
+	prepareAndPlayPlayable(mp3)
+	prepareAndPlayPlayable(wav)
 }
 
-func PlayAudio(p Playable) {
+func prepareAndPlayPlayable(p Playable) {
+	fmt.Println("Configuring system audio...")
 	fmt.Println("Starting playback...")
 	p.Play()
 	fmt.Println("Playback finished")
