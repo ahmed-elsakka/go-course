@@ -8,7 +8,7 @@ type Playable interface {
 
 type AdvancedPlayable interface {
 	Playable
-	compress()
+	Compress()
 }
 
 type MP3 struct {
@@ -23,7 +23,7 @@ func (m MP3) Play() {
 	fmt.Printf("Playing MP3 file: %s \n", m.Name)
 }
 
-func (m MP3) compress() {
+func (m MP3) Compress() {
 	fmt.Println("Compressing MP3 file: ", m.Name)
 }
 
@@ -47,6 +47,6 @@ func prepareAndPlayPlayable(p Playable) {
 }
 
 func compressAndPlayAdvancedPlayable(advancedPlayable AdvancedPlayable) {
-	advancedPlayable.compress()
+	advancedPlayable.Compress()
 	advancedPlayable.Play()
 }

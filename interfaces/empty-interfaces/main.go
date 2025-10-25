@@ -10,7 +10,7 @@ func main() {
 
 	fmt.Println(anyValue)
 
-	var data []interface{}
+	var data []any // any is an alias to interface{}
 	data = append(data, 10, "Go", true, 3.14)
 
 	for _, v := range data {
