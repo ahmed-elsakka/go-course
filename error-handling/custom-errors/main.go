@@ -1,29 +1,34 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
-type DivisionError struct {
-	A, B float64
-	Msg  string
+type ValidationError struct {
+	Field string
+	Msg   string
 }
 
-func (e *DivisionError) Error() string {
-	return fmt.Sprintf("Math error: %s (a=%.2f, b=%.2f)", e.Msg, e.A, e.B)
+func (v ValidationError) Error() string {
+	return fmt.Sprintf("validation failed on field '%s': %s", v.Field, v.Msg)
 }
 
-func divide(a, b float64) (float64, error) {
-	if b == 0 {
-		return 0, &DivisionError{A: a, B: b, Msg: "cannot divide by zero"}
+func validateUser(name string, age int) error {
+	if name == "" {
+		return ValidationError{Field: "name", Msg: "cannot be empty"}
 	}
-	return a / b, nil
+	if age <= 0 {
+		return ValidationError{Field: "age", Msg: "must be positive"}
+	}
+	return nil
 }
 
 func main() {
-	result, err := divide(10, 0)
+	err := validateUser("", 25)
 	if err != nil {
-		fmt.Println("Error: ", err)
+		fmt.Println("Error:", err)
 		return
 	}
 
-	fmt.Println("Result: ", result)
+	fmt.Println("User is valid")
 }
