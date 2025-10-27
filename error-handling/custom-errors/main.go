@@ -2,33 +2,38 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
-type ValidationError struct {
+type UserValidationError struct {
 	Field string
-	Msg   string
 }
 
-func (v ValidationError) Error() string {
-	return fmt.Sprintf("validation failed on field '%s': %s", v.Field, v.Msg)
+func (err UserValidationError) Error() string {
+	return fmt.Sprintf("invalid user %s", err.Field)
 }
 
-func validateUser(name string, age int) error {
+func validateUserData(name string, email string) error {
 	if name == "" {
-		return ValidationError{Field: "name", Msg: "cannot be empty"}
+		return UserValidationError{Field: "name"}
 	}
-	if age <= 0 {
-		return ValidationError{Field: "age", Msg: "must be positive"}
+	if !strings.Contains(email, "@") {
+		return UserValidationError{Field: "email"}
 	}
 	return nil
 }
 
-func main() {
-	err := validateUser("", 25)
-	if err != nil {
-		fmt.Println("Error:", err)
+func registerUser(name string, email string) {
+
+	if err := validateUserData(name, email); err != nil {
+		fmt.Println("Error: ", err)
 		return
 	}
+	fmt.Printf("User %s (email %s) registered successfully!\n", name, email)
+}
 
-	fmt.Println("User is valid")
+func main() {
+	registerUser("", "incorrectEmail")
+	registerUser("Alice", "alice@example.com")
+	registerUser("Sara", "sara.com")
 }
