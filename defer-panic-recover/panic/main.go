@@ -1,21 +1,39 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 )
 
-func loadConfig() string {
-	config := os.Getenv("APP_CONFIG")
-	if config == "" {
-		panic("APP_CONFIG environment variable not set")
-	}
-	return config
+type Config struct {
+	Port     int    `json:"port"`
+	Database string `json:"database"`
 }
 
 func main() {
-	defer fmt.Println("Shutting down...")
-	fmt.Println("Loading configuration...")
-	config := loadConfig()
-	fmt.Println("Config loaded:", config)
+	config := loadConfig("config.json")
+	fmt.Println("Starting server on port:", config.Port)
+	fmt.Println("Connected to database:", config.Database)
 }
+
+func loadConfig(filename string) Config {
+	data, err := os.ReadFile(filename)
+	if err != nil {
+		panic(fmt.Sprintf("Failed to read config file %s: %v", filename, err))
+	}
+
+	var config Config
+	err = json.Unmarshal(data, &config)
+	if err != nil {
+		panic(fmt.Sprintf("Invalid config format: %v", err))
+	}
+
+	return config
+}
+
+/*func main() {
+	fmt.Println("Starting program...")
+	panic("Unrecoverable issue happened")
+	fmt.Println("This line wont execute")
+}*/

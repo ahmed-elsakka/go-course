@@ -1,27 +1,15 @@
 package main
 
-import (
-	"fmt"
-	"os"
-)
+import "fmt"
 
-func safeFileRead(filename string) {
+func main() {
 	defer func() {
 		if r := recover(); r != nil {
 			fmt.Println("Recovered from panic:", r)
 		}
 	}()
 
-	file, err := os.Open(filename)
-	if err != nil {
-		panic("Failed to open file: " + err.Error())
-	}
-	defer file.Close()
-
-	fmt.Println("File opened successfully!")
-}
-
-func main() {
-	safeFileRead("nonexistent.txt")
-	fmt.Println("Program completed safely.")
+	fmt.Println("Starting program")
+	panic("Something went terribly wrong!")
+	//fmt.Println("This line will not be executed")
 }
