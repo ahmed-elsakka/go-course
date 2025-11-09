@@ -1,12 +1,8 @@
 package main
 
-import (
-	"encoding/json"
-	"fmt"
-	"os"
-)
+import "fmt"
 
-type Config struct {
+/*type Config struct {
 	Port     int    `json:"port"`
 	Database string `json:"database"`
 }
@@ -30,10 +26,10 @@ func loadConfig(filename string) Config {
 	}
 
 	return config
-}
+}*/
 
-/*func main() {
+func main() {
 	fmt.Println("Starting program...")
 	panic("Unrecoverable issue happened")
 	fmt.Println("This line wont execute")
-}*/
+}

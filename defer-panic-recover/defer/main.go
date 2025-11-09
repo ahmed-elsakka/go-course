@@ -1,12 +1,10 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 )
 
-func main() {
+/*func main() {
 	file, err := os.Open("example.txt")
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -38,12 +36,12 @@ func main() {
 	}
 
 	fmt.Printf("File read complete — %d lines processed.\n", lineCount)
-}
+}*/
 
-/*func main() {
+func main() {
 	fmt.Println("Start")
 
 	defer fmt.Println("Deferred call 1")
 
 	fmt.Println("End")
-}*/
+}

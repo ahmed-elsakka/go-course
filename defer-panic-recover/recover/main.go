@@ -3,13 +3,13 @@ package main
 import "fmt"
 
 func main() {
+	fmt.Println("Starting program")
 	defer func() {
-		if r := recover(); r != nil {
-			fmt.Println("Recovered from panic:", r)
+		r := recover()
+		if r != nil {
+			fmt.Println("Recovered from panic: ", r)
 		}
 	}()
-
-	fmt.Println("Starting program")
 	panic("Something went terribly wrong!")
-	//fmt.Println("This line will not be executed")
+	fmt.Println("Ending program")
 }
