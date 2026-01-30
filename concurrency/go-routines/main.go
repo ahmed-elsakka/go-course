@@ -5,20 +5,17 @@ import (
 	"time"
 )
 
-func fastOperation() {
-	fmt.Println("Fast operation.")
+func fast() {
+	fmt.Println("Fast completed")
 }
 
-func slowOperation() {
+func slow() {
 	time.Sleep(1 * time.Second)
-	fmt.Println("Slow operation.")
+	fmt.Println("Slow completed")
 }
+
 func main() {
-	start := time.Now()
-	go slowOperation()
-	go slowOperation()
-	go slowOperation()
-	go fastOperation()
-	go fastOperation()
-	fmt.Printf("Total run time: %v", time.Since(start))
+	go slow()
+	go fast()
+	time.Sleep(3 * time.Second)
 }
