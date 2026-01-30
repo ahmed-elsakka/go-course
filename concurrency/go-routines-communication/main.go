@@ -5,8 +5,9 @@ import (
 	"time"
 )
 
-func fast(done chan int) {
+func fast(done chan int, slowDone chan int) {
 	fmt.Println("Fast started")
+	<-slowDone
 	fmt.Println("Fast completed")
 	done <- 1
 }
@@ -23,12 +24,7 @@ func main() {
 	fastDone := make(chan int)
 
 	go slow(slowDone)
-	go fast(fastDone)
+	go fast(fastDone, slowDone)
 
-	select {
-	case <-slowDone:
-		return
-	case <-fastDone:
-		return
-	}
+	<-fastDone
 }
