@@ -37,4 +37,5 @@ func main() {
 	}
 
 	fmt.Printf("Total run time: %v\n", time.Since(start))
+
 }

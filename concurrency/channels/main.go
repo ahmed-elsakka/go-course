@@ -5,28 +5,24 @@ import (
 	"time"
 )
 
-func fastOperation(id int, channel chan string) {
-	fmt.Printf("Fast operation %d started\n", id)
-	channel <- fmt.Sprintf("Fast operation %d ended", id)
+func fast(done chan int) {
+	fmt.Println("Fast completed")
+	done <- 1
 }
 
-func slowOperation(id int, channel chan string) {
-	fmt.Printf("Slow operation %d started\n", id)
+func slow(done chan int) {
 	time.Sleep(1 * time.Second)
-	channel <- fmt.Sprintf("Slow operation %d ended", id)
+	fmt.Println("Slow completed")
+	done <- 1
 }
+
 func main() {
-	start := time.Now()
-	channel := make(chan string)
+	slowDone := make(chan int)
+	fastDone := make(chan int)
 
-	go slowOperation(1, channel)
-	go slowOperation(2, channel)
-	go slowOperation(3, channel)
-	go fastOperation(4, channel)
-	go fastOperation(5, channel)
+	go slow(slowDone)
+	go fast(fastDone)
 
-	for i := 0; i < 4; i++ {
-		fmt.Println(<-channel)
-	}
-	fmt.Printf("Total run time: %v", time.Since(start))
+	<-fastDone
+	<-slowDone
 }
