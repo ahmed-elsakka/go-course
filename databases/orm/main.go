@@ -8,27 +8,27 @@ import (
 )
 
 type User struct {
-	ID    uint `gorm:"primaryKey"`
+	ID    uint `gorm:"primarykey"`
 	Name  string
 	Email string
 }
 
 func main() {
-	dsn := "root:root@/main"
+	dsn := "admin:1234@/main"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		panic("Failed to connect to database!")
+		fmt.Println("Error connecting to db: ", err)
 	}
 
-	db.AutoMigrate(&User{})
-
-	db.Create(&User{Name: "Bob", Email: "bob@example.com"})
+	newUser := User{Name: "Alice", Email: "alice@email.com"}
+	db.Create(&newUser)
 
 	var user User
-	db.Where("name = ?", "Bob").First(&user)
+	db.Where("name = ?", "Alice").First(&user)
 	fmt.Println(user)
 
-	db.Model(&user).Update("Email", "bob@newdomain.com")
+	db.Model(&user).Update("Email", "alice@newemail.com")
 
-	//db.Delete(&student)
+	db.Delete(&user)
+
 }
