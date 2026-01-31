@@ -8,17 +8,20 @@ import (
 
 func main() {
 	url := "https://jsonplaceholder.typicode.com/todos/1"
-	response, err := http.Get(url)
+	res, err := http.Get(url)
+
 	if err != nil {
-		fmt.Println("Error fetching data:", err)
+		fmt.Println("Error making api request: ", err)
 		return
 	}
-	defer response.Body.Close()
 
-	body, err := io.ReadAll(response.Body)
+	defer res.Body.Close()
+
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
-		fmt.Println("Error reading response:", err)
+		fmt.Println("Error reading response body: ", err)
 		return
 	}
 	fmt.Println(string(body))
+
 }
