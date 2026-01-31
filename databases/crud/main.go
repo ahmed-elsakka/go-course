@@ -7,7 +7,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-type Student struct {
+type User struct {
 	ID    int
 	Name  string
 	Email string
@@ -16,45 +16,39 @@ type Student struct {
 func main() {
 	dsn := "admin:1234@/main"
 	db, err := sql.Open("mysql", dsn)
-	if err != nil {
-		fmt.Println("Error connecting to db: ", err)
-	}
+	handleError(err)
 	defer db.Close()
 
 	insertQuery := "INSERT INTO users (name, email) VALUES (?, ?)"
 	result, err := db.Exec(insertQuery, "Alice", "alice@example.com")
-	if err != nil {
-		fmt.Println("Error querying db: ", err)
-	}
-	id, _ := result.LastInsertId()
-	fmt.Printf("Inserted user with ID %d\n", id)
+	handleError(err)
 
-	rows, err := db.Query("SELECT id, name, email FROM users")
-	if err != nil {
-		fmt.Println("Error querying db: ", err)
-	}
+	id, _ := result.LastInsertId()
+	fmt.Println("Inserted a new user with id: ", id)
+
+	selectQuery := "SELECT id, name, email FROM users"
+	rows, err := db.Query(selectQuery)
+	handleError(err)
+
 	defer rows.Close()
 
 	for rows.Next() {
-		var s Student
-		err := rows.Scan(&s.ID, &s.Name, &s.Email)
-		if err != nil {
-			fmt.Println("Error querying db: ", err)
-		}
-		fmt.Printf("%d: %s - %s\n", s.ID, s.Name, s.Email)
+		var user User
+		rows.Scan(&user.ID, &user.Name, &user.Email)
+		fmt.Printf("%d: %s - %s\n", user.ID, user.Name, user.Email)
 	}
-
 	updateQuery := "UPDATE users SET email=? WHERE id=?"
-	_, err = db.Exec(updateQuery, "alice@newdomain.com", id)
-	if err != nil {
-		fmt.Println("Error querying db: ", err)
-	}
-	fmt.Println("Updated email successfully")
+	result, err = db.Exec(updateQuery, "alice@newemail.com", "1")
+	handleError(err)
 
 	deleteQuery := "DELETE FROM users WHERE id=?"
-	_, err = db.Exec(deleteQuery, id)
+	result, err = db.Exec(deleteQuery, id)
+	handleError(err)
+
+}
+
+func handleError(err error) {
 	if err != nil {
-		fmt.Println("Error querying db: ", err)
+		fmt.Println("Error: ", err)
 	}
-	fmt.Println("Deleted student successfully")
 }
