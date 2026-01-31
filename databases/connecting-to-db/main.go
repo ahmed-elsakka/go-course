@@ -3,24 +3,25 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"log"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
-	dsn := "root:root@/main"
+	dsn := "admin:1234@/main"
 
 	db, err := sql.Open("mysql", dsn)
-	if err != nil {
-		log.Fatalf("Error opening database: %v", err)
-	}
-	defer db.Close()
 
+	if err != nil {
+		fmt.Println("Cant connect to db: ", err)
+	}
+
+	defer db.Close()
 	err = db.Ping()
 	if err != nil {
-		log.Fatalf("Cannot connect: %v", err)
+		fmt.Println("Not connected to db: ", err)
 	}
 
-	fmt.Println("Connected to the database successfully!")
+	fmt.Println("Connected to the database successfully")
+
 }

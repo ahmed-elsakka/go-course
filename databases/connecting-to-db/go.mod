@@ -1,4 +1,4 @@
-module connect-db
+module connect-to-db
 
 go 1.25.0
 

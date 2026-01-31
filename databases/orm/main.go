@@ -7,28 +7,28 @@ import (
 	"gorm.io/gorm"
 )
 
-type Student struct {
+type User struct {
 	ID    uint `gorm:"primaryKey"`
 	Name  string
 	Email string
 }
 
 func main() {
-	dsn := "root:root@tcp(127.0.0.1:3306)/school?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:root@/main"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("Failed to connect to database!")
 	}
 
-	db.AutoMigrate(&Student{})
+	db.AutoMigrate(&User{})
 
-	db.Create(&Student{Name: "Bob", Email: "bob@example.com"})
+	db.Create(&User{Name: "Bob", Email: "bob@example.com"})
 
-	var student Student
-	db.Where("name = ?", "Bob").First(&student)
-	fmt.Println(student)
+	var user User
+	db.Where("name = ?", "Bob").First(&user)
+	fmt.Println(user)
 
-	db.Model(&student).Update("Email", "bob@newdomain.com")
+	db.Model(&user).Update("Email", "bob@newdomain.com")
 
 	//db.Delete(&student)
 }
