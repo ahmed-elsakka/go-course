@@ -15,16 +15,19 @@ type Todo struct {
 
 func main() {
 	url := "https://jsonplaceholder.typicode.com/todos/1"
-	response, err := http.Get(url)
+	res, err := http.Get(url)
+
 	if err != nil {
-		fmt.Println("Error fetching data:", err)
+		fmt.Println("Error making api request: ", err)
 		return
 	}
-	defer response.Body.Close()
+
+	defer res.Body.Close()
 
 	var todo Todo
-	if err := json.NewDecoder(response.Body).Decode(&todo); err != nil {
-		fmt.Println("Error decoding json:", err)
+	err = json.NewDecoder(res.Body).Decode(&todo)
+	if err != nil {
+		fmt.Println("Error decoding json response: ", err)
 		return
 	}
 	fmt.Printf("Todo id: %d, user id: %d, title: %s, completed: %t", todo.ID, todo.UserId, todo.Title, todo.Completed)
