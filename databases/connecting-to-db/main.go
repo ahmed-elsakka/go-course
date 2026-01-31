@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	dsn := "root:root@tcp(127.0.0.1:3306)/school"
+	dsn := "root:root@/main"
 
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
