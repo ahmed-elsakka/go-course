@@ -1,27 +1,28 @@
 package main
 
 import (
-	"log"
 	"net/http"
-	"tasks-management/api"
-	"tasks-management/daemons"
-	"tasks-management/db"
-	"tasks-management/models"
+	"task-manager/config"
+	"task-manager/handlers"
+	"task-manager/models"
+	"task-manager/repository"
+	"task-manager/service"
 )
 
 func main() {
-	database, err := db.ConnectDB()
+	db, err := config.ConnectDatabase()
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
-	repo := &models.SQLRepo{DB: database}
 
-	handler := &api.Handler{Repo: repo}
-	http.HandleFunc("/tasks", handler.ListTasks)
-	http.HandleFunc("/task/create", handler.CreateTask)
+	db.AutoMigrate(&models.Task{})
 
-	daemons.StartNotifier()
+	repo := repository.NewMySQLTaskRepository(db)
+	service := service.NewTaskService(repo)
+	handler := handlers.NewTaskHandler(service)
 
-	log.Println("Server running on http://localhost:8080")
+	http.HandleFunc("/tasks", handler.HandleTasks)
+	http.HandleFunc("/tasks/", handler.HandleTaskByID)
+
 	http.ListenAndServe(":8080", nil)
 }
