@@ -1,24 +1,24 @@
-package service
+package services
 
 import (
 	"errors"
 	"strings"
-	"task-manager/models"
-	"task-manager/repository"
+	"task-management/models"
+	"task-management/repositories"
 )
 
 type TaskService struct {
-	repo repository.TaskRepository
+	repo repositories.TaskRepository
 }
 
-func NewTaskService(repo repository.TaskRepository) *TaskService {
+func NewTaskService(repo repositories.TaskRepository) *TaskService {
 	return &TaskService{repo: repo}
 }
 
 func (s *TaskService) CreateTask(title string) (*models.Task, error) {
 	title = strings.TrimSpace(title)
 	if title == "" {
-		return nil, errors.New("title cannot be empty")
+		return nil, errors.New("Error creating task: empty title")
 	}
 
 	task := &models.Task{
@@ -30,7 +30,7 @@ func (s *TaskService) CreateTask(title string) (*models.Task, error) {
 	return task, err
 }
 
-func (s *TaskService) GetTasks() ([]models.Task, error) {
+func (s *TaskService) GetAll() ([]models.Task, error) {
 	return s.repo.GetAll()
 }
 
@@ -47,6 +47,6 @@ func (s *TaskService) UpdateTask(id uint, title string, completed bool) (*models
 	return task, err
 }
 
-func (s *TaskService) DeleteTask(id uint) error {
+func (s *TaskService) Delete(id uint) error {
 	return s.repo.Delete(id)
 }

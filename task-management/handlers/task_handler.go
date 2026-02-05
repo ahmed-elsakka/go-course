@@ -5,33 +5,35 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-	"task-manager/service"
+	"task-management/services"
 )
 
 type TaskHandler struct {
-	service *service.TaskService
+	service *services.TaskService
 }
 
-func NewTaskHandler(service *service.TaskService) *TaskHandler {
+func NewTaskHandler(service *services.TaskService) *TaskHandler {
 	return &TaskHandler{service: service}
 }
 
 func (h *TaskHandler) HandleTasks(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
-
 	case http.MethodPost:
 		defer r.Body.Close()
 
-		var body struct {
+		var requestJson struct {
 			Title string `json:"title"`
 		}
 
-		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-			http.Error(w, "invalid JSON", http.StatusBadRequest)
+		err := json.NewDecoder(r.Body).Decode(&requestJson)
+
+		if err != nil {
+			http.Error(w, "Invalid JSON: "+err.Error(), http.StatusBadRequest)
 			return
 		}
 
-		task, err := h.service.CreateTask(body.Title)
+		task, err := h.service.CreateTask(requestJson.Title)
+
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
@@ -40,9 +42,10 @@ func (h *TaskHandler) HandleTasks(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(task)
 
 	case http.MethodGet:
-		tasks, err := h.service.GetTasks()
+		tasks, err := h.service.GetAll()
+
 		if err != nil {
-			http.Error(w, "failed to fetch tasks", http.StatusInternalServerError)
+			http.Error(w, "Error fetching the tasks", http.StatusInternalServerError)
 			return
 		}
 
@@ -53,47 +56,50 @@ func (h *TaskHandler) HandleTasks(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *TaskHandler) HandleTaskByID(w http.ResponseWriter, r *http.Request) {
+func (h *TaskHandler) HandleTaskById(w http.ResponseWriter, r *http.Request) {
+
 	idStr := strings.TrimPrefix(r.URL.Path, "/tasks/")
 	id, err := strconv.Atoi(idStr)
+
 	if err != nil {
-		http.Error(w, "invalid task ID", http.StatusBadRequest)
+		http.Error(w, "Invalid task Id", http.StatusBadRequest)
 		return
 	}
 
 	switch r.Method {
-
 	case http.MethodPut:
 		defer r.Body.Close()
 
-		var body struct {
+		var requestJson struct {
 			Title     string `json:"title"`
 			Completed bool   `json:"completed"`
 		}
 
-		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
-			http.Error(w, "invalid JSON", http.StatusBadRequest)
+		err := json.NewDecoder(r.Body).Decode(&requestJson)
+		if err != nil {
+			http.Error(w, "Invalid JSON", http.StatusBadRequest)
 			return
 		}
 
-		task, err := h.service.UpdateTask(uint(id), body.Title, body.Completed)
+		task, err := h.service.UpdateTask(uint(id), requestJson.Title, requestJson.Completed)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusNotFound)
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
 		json.NewEncoder(w).Encode(task)
 
 	case http.MethodDelete:
-		err := h.service.DeleteTask(uint(id))
+		err = h.service.Delete(uint(id))
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusNotFound)
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
 		w.WriteHeader(http.StatusNoContent)
 
 	default:
-		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
+
 }

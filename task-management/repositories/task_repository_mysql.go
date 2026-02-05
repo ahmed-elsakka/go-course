@@ -1,8 +1,7 @@
-package repository
+package repositories
 
 import (
-	"errors"
-	"task-manager/models"
+	"task-management/models"
 
 	"gorm.io/gorm"
 )
@@ -27,11 +26,11 @@ func (r *MySQLTaskRepository) GetAll() ([]models.Task, error) {
 
 func (r *MySQLTaskRepository) GetByID(id uint) (*models.Task, error) {
 	var task models.Task
-	result := r.db.First(&task, id)
-	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-		return nil, errors.New("task not found")
+	res := r.db.First(&task, id)
+	if res.Error != nil {
+		return nil, res.Error
 	}
-	return &task, result.Error
+	return &task, res.Error
 }
 
 func (r *MySQLTaskRepository) Update(task *models.Task) error {
